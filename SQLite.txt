@@ -1,0 +1,28 @@
+create table customers ("FIRST_NAME" text, "LAST_NAME" text, "ADDRESS" text, "CITY" text, "STATE" text, "ZIP" text, "PHONE" text, "BALANCE" text);
+
+.mode csv
+.import C:/Users/WCF/balances.csv customers
+
+select * from customers limit 10;
+
+alter table customers add column "Numbalance" float;
+
+UPDATE customers SET "Numbalance" = CAST(substr(BALANCE,2) AS float);
+
+delete from customers where numbalance=0;
+
+ .headers on
+ .mode csv
+ .output summarySQLite.csv
+
+SELECT 
+"STATE", 
+'$' || MIN("Numbalance") AS "MIN_BALANCE",
+'$' || MAX("Numbalance") AS "MAX_BALANCE", 
+'$' || substr(AVG("Numbalance"),1, INSTR(Numbalance,'.')+2) AS "MEAN_BALANCE", 
+'$' || SUM("Numbalance") AS "TOTAL_BALANCE"
+FROM customers
+GROUP BY "STATE";
+
+
+ .quit

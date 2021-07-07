@@ -11,7 +11,7 @@ public class ReadCSV {
         String line = "";
         String splitBy = ",";
         try {
-            BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\yarki\\Desktop\\Test DEV prep\\WCF\\balances.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\WCF\\balances.csv"));
             while ((line = br.readLine()) != null)
 
             { Customer customer = new Customer();
