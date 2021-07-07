@@ -1,0 +1,50 @@
+CREATE TABLE public.temp33
+(
+    "FIRST_NAME" character varying(50) COLLATE pg_catalog."default",
+    "Last_Name" character varying(50) COLLATE pg_catalog."default",
+    "ADDRESS" character varying(250) COLLATE pg_catalog."default",
+    "CITY" character varying(50) COLLATE pg_catalog."default",
+    "STATE" character varying(50) COLLATE pg_catalog."default",
+    "ZIP" character varying(10) COLLATE pg_catalog."default",
+    "PHONE" character varying(25) COLLATE pg_catalog."default",
+    "BALANCE" money
+)
+
+TABLESPACE pg_default;
+
+Import CSV.
+
+SELECT "FIRST_NAME", "LAST_NAME", "ADDRESS", "CITY", "STATE", "ZIP", "PHONE", "BALANCE"
+	FROM public.temp33;
+Successfully run. Total query runtime: 142 msec.
+10000 rows affected.
+
+CREATE TABLE public.temp34
+(
+    "STATE" character varying(50) COLLATE pg_catalog."default",
+    "MIN_BALANCE" money,
+    "MAX_BALANCE" money,
+    "MEAN_BALANCE" money,
+    "TOTAL_BALANCE" money
+)
+
+
+INSERT INTO public.temp34(
+	"STATE", "MIN_BALANCE", "MAX_BALANCE", "MEAN_BALANCE", "TOTAL_BALANCE")
+	(SELECT
+"STATE", 
+MIN("BALANCE") AS "MIN_BALANCE",
+MAX("BALANCE") AS "MAX_BALANCE", 
+AVG("BALANCE"::NUMERIC)::NUMERIC(10,2) AS "MEAN_BALANCE", 
+SUM("BALANCE") AS "TOTAL_BALANCE"
+FROM public.temp33
+GROUP BY "STATE"
+);
+
+SELECT "STATE", "MIN_BALANCE", "MAX_BALANCE", "MEAN_BALANCE", "TOTAL_BALANCE"
+	FROM public.temp34;
+
+Successfully run. Total query runtime: 52 msec.
+50 rows affected.
+
+Export CSV.
